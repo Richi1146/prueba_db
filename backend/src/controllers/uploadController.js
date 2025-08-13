@@ -5,19 +5,19 @@ import { fileURLToPath } from 'url';
 import { loadCsvIntoDatabase } from '../utils/csvLoader.js';
 import { loadMultiCsvFromDir } from '../utils/multiCsvLoader.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
 
 // POST /api/upload/csv
 // Recibe un archivo CSV (consolidado) y lo carga a la BD
 export async function handleCsvUpload(req, res, next) {
   try {
     if (!req.file) return res.status(400).json({ message: 'file is required (multipart/form-data, field name: file)' });
-    const filePath = path.resolve(__dirname, '../../', req.file.path);
-    await loadCsvIntoDatabase(filePath);
+    const filePath = path.resolve(dirname, '../../', req.file.path);
+    const summary = await loadCsvIntoDatabase(filePath);
     // Borramos el archivo temporal después de cargar
     fs.unlink(filePath, () => {});
-    res.json({ message: 'CSV loaded successfully' });
+    res.json({ message: 'CSV loaded successfully', summary });
   } catch (err) {
     next(err);
   }
@@ -36,4 +36,4 @@ export async function handleMultiCsvDirLoad(req, res, next) {
   } catch (err) {
     next(err);
   }
-} 
+}

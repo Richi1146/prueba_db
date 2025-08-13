@@ -10,8 +10,9 @@ async function main() {
   }
   try {
     console.log('Cargando CSV:', csvPath);
-    await loadCsvIntoDatabase(csvPath);
+    const summary = await loadCsvIntoDatabase(csvPath);
     console.log('CSV cargado correctamente');
+    console.log('Resumen:', JSON.stringify(summary, null, 2));
   } catch (err) {
     console.error('Fallo la carga del CSV');
     console.error(err);
@@ -19,4 +20,4 @@ async function main() {
   }
 }
 
-main(); 
+main();

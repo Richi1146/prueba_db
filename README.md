@@ -1,4 +1,4 @@
-# Fintech SQL Data Management
+## Application to manage ExpertSoft data
 
 A simple full-stack project to normalize, store and manage Fintech (Nequi/Daviplata) data in a MySQL database. Includes:
 
@@ -8,36 +8,33 @@ A simple full-stack project to normalize, store and manage Fintech (Nequi/Davipl
 - Minimal Bootstrap dashboard for managing customers
 - Postman collection
 
-## Tech stack
+## Technologies
 
 - Node.js + Express
-- MySQL (mysql2/promise)
+- MySQL 
 - CSV parsing with `csv-parser`
-- Multer for local CSV upload (extra points)
-- Bootstrap frontend
+- HTML + Bootstrap frontend
 
 ## Normalization (1NF, 2NF, 3NF)
 
-From messy Excel, we identified these entities and relationships:
+I identified these entities and relationships:
 
 - `customers` (1..n) `invoices`
 - `platforms` (Nequi, Daviplata, ...)
 - `transactions` belong to a `platform`
 - Payments allocate a `transaction` amount to one or more `invoices` via `invoice_payments`
 
-This removes repeating groups (1NF), ensures full dependency on the key (2NF), and removes transitive dependencies (3NF). Emails and document numbers are unique attributes of `customers`. `platforms` are separated to avoid duplication. `invoice_payments` resolves many-to-many between `invoices` and `transactions` and stores only allocation facts.
 
-See `db/schema.sql` for the full DDL. You can export an ERD image from a Mermaid or draw.io file. Suggested Mermaid ERD (export it as PNG/PDF):
+Into `db/schema.sql` You can see the query to execute the project tables
 
 ## Database setup
 
 1) Install MySQL locally and create the database with your required name:
 
-- Edit `db/create_database.sql` replacing `pd_nombre_apellido_clan` accordingly
-- Then run in MySQL client (Workbench, CLI):
+
+- Run the DB in MySQL client (Workbench, CLI):
 
 ```sql
-SOURCE D:/path/to/project/db/create_database.sql;
 SOURCE D:/path/to/project/db/schema.sql;
 ```
 
@@ -48,8 +45,9 @@ cd backend
 copy .env.example .env
 ```
 
-Edit `.env` with your values (default points to DB `test`):
+Edit `.env` with your values:
 
+### Example:
 ```
 PORT=3000
 DB_HOST=localhost
@@ -57,13 +55,6 @@ DB_USER=root
 DB_PASSWORD=12345
 DB_NAME=test
 DB_PORT=3306
-```
-
-If you want to quickly create the `test` database:
-
-```sql
-SOURCE D:/path/to/project/db/create_database_test.sql;
-SOURCE D:/path/to/project/db/schema.sql;
 ```
 
 ## Install and run backend
@@ -82,7 +73,7 @@ Open `frontend/index.html` in your browser. It points to `http://localhost:3000/
 
 ## CSV bulk load
 
-- Sample CSV (single consolidated): `db/sample_data.csv`
+- Sample CSV (single consolidated): `db/example_data.csv`
 - Your project CSVs (separate files):
   - `db/clientes.csv` with headers: `ID_Cliente,Nombre,Dirección,Teléfono,Email`
   - `db/facturas.csv` with headers: `ID_Factura,Periodo,Monto_Facturado` (Periodo format: `YYYY-MM`)
@@ -93,7 +84,7 @@ Two ways to load:
 - CLI (single consolidated):
 ```bash
 cd backend
-npm run load:csv -- ../db/sample_data.csv
+npm run load:csv -- ../db/example.csv
 ```
 
 - CLI (from your 3 CSVs in db/):
@@ -103,6 +94,14 @@ npm run load:csv:db -- ../db
 ```
 
 - Endpoint (extra, accepts only consolidated CSV via multipart): `POST http://localhost:3000/api/upload/csv` with multipart/form-data, field `file`.
+
+
+
+## Advanced queries (Postman only)
+
+1) Total paid by customer: `GET /api/queries/total-paid-by-customer`
+2) Pending invoices with customer and transactions: `GET /api/queries/pending-invoices`
+3) Transactions by platform: `GET /api/queries/transactions-by-platform?platform=Nequi`
 
 ## CRUD endpoints (customers)
 
@@ -124,16 +123,9 @@ Payload example (POST):
 }
 ```
 
-## Advanced queries (Postman only)
 
-1) Total paid by customer: `GET /api/queries/total-paid-by-customer`
-2) Pending invoices with customer and transactions: `GET /api/queries/pending-invoices`
-3) Transactions by platform: `GET /api/queries/transactions-by-platform?platform=Nequi`
+## Coder
 
-Import `postman/Fintech-DB.postman_collection.json` and set `{{baseUrl}}` to `http://localhost:3000/api` if needed.
-
-## Developer
-
-- Name: Jerónimo Gutiérrez Arias
+- Name: Ricardo Carmona
 - Clan: Berners Lee
-- Email: jeronimogutierrezarias@outlook.com 
+- Email: ricardo225.x@gmail.com 

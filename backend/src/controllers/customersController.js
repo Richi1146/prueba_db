@@ -1,7 +1,7 @@
 // Controlador de la entidad customers: validación y operaciones CRUD
 import pool from '../db.js';
 
-// Validación básica del payload de cliente
+// Validación basica del payload de cliente
 function validateCustomerPayload(body) {
   const errors = [];
   if (!body.document_number || String(body.document_number).trim().length === 0) {
@@ -68,7 +68,7 @@ export async function createCustomer(req, res, next) {
 export async function updateCustomer(req, res, next) {
   try {
     const { id } = req.params;
-    // Permitimos actualización parcial; validamos formato general
+    // Permitimos actualización parcial, validamos formato general
     const errors = validateCustomerPayload({ ...req.body, document_number: req.body.document_number ?? 'placeholder' });
     if (errors.filter(e => e !== 'document_number is required').length) {
       return res.status(400).json({ message: 'Validation failed', errors });
@@ -138,7 +138,7 @@ export async function deleteCustomer(req, res, next) {
         invoiceIds
       );
 
-      // Eliminar transacciones huérfanas (que ya no tengan pagos asociados)
+      // Eliminar transacciones huerfanas (que ya no tengan pagos asociados)
       if (transactionIds.length > 0) {
         const txPlaceholders = transactionIds.map(() => '?').join(',');
         await connection.query(
