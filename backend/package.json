@@ -1,0 +1,27 @@
+{
+  "name": "fintech-sql-backend",
+  "version": "1.0.0",
+  "description": "Backend Express para gestion de datos Fintech con MySQL, carga CSV y consultas avanzadas",
+  "type": "module",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "load:csv": "node src/scripts/loadCsv.js",
+    "load:csv:db": "node src/scripts/loadMultiCsv.js ../db"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "csv-parser": "^3.2.0",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.14.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

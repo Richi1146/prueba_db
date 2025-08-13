@@ -1,0 +1,45 @@
+{
+  "info": {
+    "name": "Fintech DB API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "CRUD de customers, carga CSV y consultas avanzadas"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": {"method": "GET", "url": "{{baseUrl}}/health"}
+    },
+    {
+      "name": "Customers",
+      "item": [
+        {"name": "List Customers", "request": {"method": "GET", "url": "{{baseUrl}}/customers"}},
+        {"name": "Create Customer", "request": {"method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": {"mode": "raw", "raw": "{\n  \"document_number\": \"9999\",\n  \"first_name\": \"Test\",\n  \"last_name\": \"User\",\n  \"email\": \"test@example.com\",\n  \"phone\": \"3000000000\"\n}"}, "url": "{{baseUrl}}/customers"}},
+        {"name": "Get Customer by ID", "request": {"method": "GET", "url": "{{baseUrl}}/customers/1"}},
+        {"name": "Update Customer", "request": {"method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": {"mode": "raw", "raw": "{\n  \"first_name\": \"Updated\"\n}"}, "url": "{{baseUrl}}/customers/1"}},
+        {"name": "Delete Customer", "request": {"method": "DELETE", "url": "{{baseUrl}}/customers/1"}}
+      ]
+    },
+    {
+      "name": "CSV Upload from db/ (multi)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {"mode": "raw", "raw": "{\n  \"dir\": \"../db\"\n}"},
+        "url": "{{baseUrl}}/upload/db"
+      }
+    },
+    {
+      "name": "Queries",
+      "item": [
+        {"name": "Total Paid by Customer", "request": {"method": "GET", "url": "{{baseUrl}}/queries/total-paid-by-customer"}},
+        {"name": "Pending Invoices", "request": {"method": "GET", "url": "{{baseUrl}}/queries/pending-invoices"}},
+        {"name": "Transactions by Platform (Nequi)", "request": {"method": "GET", "url": "{{baseUrl}}/queries/transactions-by-platform?platform=Nequi"}}
+      ]
+    }
+  ],
+  "variable": [
+    {"key": "baseUrl", "value": "http://localhost:3000/api"}
+  ]
+} 
